@@ -21,6 +21,10 @@
 @endsection
 
 @section('contenido')
-{{$bibliotecas}}
+
+    @foreach ($bibliotecas as $biblioteca )
+    {{$biblioteca}}
+            {{$biblioteca->dependencias}}
+    @endforeach
 
 @endsection

@@ -19,3 +19,4 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/PanelTutorias','tutoresController@index')->name('tutor.index');
+Route::get('/verContacto/{id}','tutoresController@mostrarContactos')->name('contacto.biblioteca');
