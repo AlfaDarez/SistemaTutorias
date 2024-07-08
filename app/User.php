@@ -16,7 +16,13 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name',
+        'email',
+        'telefono',
+        'celular',
+        'password',
+        'casaTutora',
+        'nivel',
     ];
 
     /**
@@ -36,4 +42,10 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function bibliotecas()
+    {
+        return $this->hasMany('App\Biblioteca', 'tutor_id');
+    }
+
 }

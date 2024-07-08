@@ -24,7 +24,7 @@ class HomeController extends Controller
     public function index()
     {
         if(\Auth::user()->nivel ==1){
-            return view('Tutor.index');
+            return redirect()->route('tutor.index');
         }else if(\Auth::user()->nivel ==2){
             return view('Administrador.index');
         }else if(\Auth::user()->nivel ==3){

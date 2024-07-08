@@ -21,5 +21,6 @@
 @endsection
 
 @section('contenido')
+{{$bibliotecas}}
 
 @endsection
