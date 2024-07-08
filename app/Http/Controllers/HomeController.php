@@ -23,6 +23,17 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        if(\Auth::user()->nivel ==1){
+            return view('Tutor.index');
+        }else if(\Auth::user()->nivel ==2){
+            return view('Administrador.index');
+        }else if(\Auth::user()->nivel ==3){
+            return view('Jefe.index');
+        }else if(\Auth::user()->nivel ==4){
+            return view('Suspendido.index');
+        }else{
+            return view('errors.404', [], 404);
+        }
+
     }
 }
