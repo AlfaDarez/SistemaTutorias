@@ -61,6 +61,19 @@ class tutoresController extends Controller
     }
 
 
+    public function TutoriaNoefectiva(){
+
+    }
+
+    public function GuardarNoEfectiva(){
+
+    }
+
+    public function ContactoEfectivo(){
+
+    }
+
+
 
 
 }

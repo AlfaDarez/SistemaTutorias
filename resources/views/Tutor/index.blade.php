@@ -25,6 +25,10 @@
     @foreach ($bibliotecas as $biblioteca )
     {{$biblioteca}}
             {{$biblioteca->dependencias}}
+            <h1>{{$biblioteca->Ultimocontacto($biblioteca->id)}}</h1>
+            <h3>{{$biblioteca->contactoEfectivo}}</h3>
+            <h3>{{$biblioteca->sinContactos}}</h3>
+
     @endforeach
 
 @endsection

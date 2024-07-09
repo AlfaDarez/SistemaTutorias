@@ -48,4 +48,16 @@ class User extends Authenticatable
         return $this->hasMany('App\Biblioteca', 'tutor_id');
     }
 
+    public function sinContactos()
+    {
+        return $this->hasMany(SinContacto::class, 'id_tutor');
+    }
+
+
+    public function contactoEfectivo()
+    {
+        return $this->hasMany(contactoEfectivo::class, 'id_tutor');
+    }
+
+
 }
