@@ -20,3 +20,12 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/PanelTutorias','tutoresController@index')->name('tutor.index');
 
+// Control del manejo de infomación
+Route::put('/actualizarContactoBdt/{id}','tutoresController@actualizarContacto')->name('contactos.update');
+
+// Adiciones
+Route::view('/','welcome')->name('index');
+Route::get('/PanelTutorias/Actualizar/{id}','tutoresController@FormularioActualizarContacto')->name('contactos.form.update');
+
+
+// modal

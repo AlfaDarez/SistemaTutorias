@@ -73,7 +73,7 @@
                         <a href="{{ route('login') }}">Ingresar</a>
 
                         @if (Route::has('register'))
-                         <!--   <a href="{{ route('register') }}">Registro</a> -->
+                        <!--   <a href="{{ route('register') }}">Registro</a> -->
                         @endif
                     @endauth
                 </div>
@@ -81,7 +81,7 @@
 
             <div class="content">
                 <div class=" title m-b-md">
-                     <h2>Biblioteca Digital Telmex</h2>
+                    <h2>Biblioteca Digital Telmex</h2>
                 </div>
 
                 <div class="links">
