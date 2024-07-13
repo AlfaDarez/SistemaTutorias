@@ -98,7 +98,42 @@ class Biblioteca extends Model
         }
 
         }
+        public function Historico($id){
+            $exitosas = contactoefectivo::where('id_bioblioteca', $id)->get();
+            $noExitosas = sincontacto::where('id_bioblioteca', $id)->get();
 
+            $data = [
+                'fallidos' => $noExitosas,
+                'exitoso' => $exitosas
+            ];
+
+            $llamadas = [];
+            $historico = [];
+
+            // obtención datos llamada
+            foreach ($data as $estados) {
+                foreach ($estados as $estado ) {
+                    // Fecha
+                    array_push($llamadas, $estado->fecha);
+
+                    // Tutor->nombre
+                    array_push($llamadas, $estado->tutor->name);
+
+                    // mensaje
+                    if (($estado->observaciones) == null) {
+                        array_push($llamadas, $estado->seguimiento);
+                    } else {
+                        array_push($llamadas, $estado->observaciones);
+                    }
+
+                    array_push($historico, $llamadas);
+                    $llamadas = [];
+                }
+            }
+            return $historico;
+
+
+        }
 
 
 

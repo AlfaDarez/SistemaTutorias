@@ -28,4 +28,5 @@ Route::view('/','welcome')->name('index');
 Route::get('/PanelTutorias/Actualizar/{id}','tutoresController@FormularioActualizarContacto')->name('contactos.form.update');
 
 
-// modal
+// modal pruebas
+// Route::get('/ejemplo1/{id}','tutoresController@HistoricoBDT');

@@ -26,41 +26,34 @@
     </div>
 @endsection
 
+{{-- Tabla principal --}}
 <div class="container mt-5">
+    <table id="ejemplo" class="table table-striped" style="width:100%">
+        <thead>
+            <tr>
+                <th>Clave</th>
+                <th>Nombre</th>
+                <th>Fecha de Contacto</th>
+                <th>Estatus</th>
+                <th>Contactar</th>
+                <th>Actualizar</th>
+            </tr>
+        </thead>
 
-        <table id="ejemplo" class="table table-striped" style="width:100%">
-            <thead>
+        <tbody>
+            @foreach ($bibliotecas as $biblioteca )
                 <tr>
-                    <th>Clave</th>
-                    <th>Nombre</th>
-                    <th>Fecha de Contacto</th>
-                    <th>Estatus</th>
-                    <th>Contactar</th>
-                    <th>Actualizar</th>
+                    <td> {{ $biblioteca['clavebdt']  }} </td>
+                    <td> {{ $biblioteca['nombreMatutino']  }} </td>
+                    <td> <a href="" data-toggle="modal" data-target="#historicoLlamadas"> {{ $biblioteca->Ultimocontacto($biblioteca->id)  }} </a></td>
+                    <td> {{ $biblioteca['estatus']  }} </td>
+                    <td> <button  type="button" class="btn btn-primary" data-toggle="modal" data-target="#contactoBiblioteca">Llamar</button></td>
+                    <td> <a href="{{ route('contactos.form.update',$biblioteca->id) }}"  > <img src="./img/edit.png" alt=""> </a></td>
                 </tr>
-            </thead>
-
-            <tbody>
-                @foreach ($bibliotecas as $biblioteca )
-                    <tr>
-                        <td> <?php echo $biblioteca['clavebdt']?> </td>
-                        <td> <?php echo $biblioteca['nombreMatutino']?> </td>
-                        <td> <a href="" data-toggle="modal" data-target="#historicoLlamadas"> <?php echo $biblioteca->Ultimocontacto($biblioteca->id)?> </a></td>
-                        <td> <?php echo $biblioteca['estatus']?> </td>
-                        <td> <button  type="button" class="btn btn-primary" data-toggle="modal" data-target="#contactoBiblioteca">Llamar</button></td>
-                        <td> <a href="{{ route('contactos.form.update',$biblioteca->id) }}"  > <img src="./img/edit.png" alt=""> </a></td>
-                    </tr>
-                @endforeach
-            </tbody>
-
-            {{-- @foreach ($bibliotecas as $biblioteca )
-                <h3 style="color: blue">{{$biblioteca->dependencias}}</h3>
-                <h3 style="color: red">{{$biblioteca->Ultimocontacto($biblioteca->id)}}</h3>
-                <h3 style="color: green">{{$biblioteca->contactoEfectivo}}</h3>
-                <h3 style="color: violet">{{$biblioteca->sinContactos}}</h3>
-            @endforeach --}}
-            </table>
-        </div>
+            @endforeach
+        </tbody>
+    </table>
+</div>
 
 
 
@@ -87,15 +80,16 @@
 
                     <tbody>
                         @foreach ($bibliotecas as $biblioteca )
-                        @foreach ($biblioteca->sinContactos as $contactos)
-                            <tr>
-                                <td> {{ $contactos->fecha}} </td>
-                                <td> {{ $contactos->tutor->name }} </td>
-                                <td> {{ $contactos->observaciones }} </td>
+                            @foreach ( $biblioteca->Historico($biblioteca->id) as $llamada)
 
-                            </tr>
+                                <tr>
+                                    <td> {{ $llamada[0] }} </td>
+                                    <td> {{ $llamada[1] }} </td>
+                                    <td> {{ $llamada[2] }} </td>
+                                </tr>
+
+                            @endforeach
                         @endforeach
-                    @endforeach
                     </tbody>
                 </table>
 

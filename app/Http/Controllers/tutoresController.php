@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 use App\Biblioteca;
 use App\Dependencia;
 use App\Http\Requests\UpdateContactoBDT;
-
+use App\sincontacto;
+use App\contactoefectivo;
 use Illuminate\Http\Request;
 
 class tutoresController extends Controller
@@ -77,7 +78,7 @@ class tutoresController extends Controller
     public function FormularioActualizarContacto($id){
 
         $biblioteca = Dependencia::get()->where('id_biblioteca',$id);
-        
+
         // Adiciones
         $id_biblioteca = $id - 1;//-1 para coincidencias con el [index]
         $user = \Auth::user()->id;
@@ -86,8 +87,5 @@ class tutoresController extends Controller
         return view('Tutor.Actualizar.contactos',compact('bibliotecas','biblioteca','id_biblioteca'));
 
     }
-
-
-
 
 }
