@@ -22,12 +22,31 @@
 
 @section('contenido')
 
+@if (session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+@endif
+
     @foreach ($bibliotecas as $biblioteca )
-    {{$biblioteca}}
-            {{$biblioteca->dependencias}}
-            <h1>{{$biblioteca->Ultimocontacto($biblioteca->id)}}</h1>
-            <h3>{{$biblioteca->contactoEfectivo}}</h3>
-            <h3>{{$biblioteca->sinContactos}}</h3>
+
+    <a href="{{route('inicio.tutoria',$biblioteca->clavebdt)}}"> {{$biblioteca->clavebdt}}</a>
+
+            @foreach ( $biblioteca->dependencias as $dependencia )
+                {{$dependencia->nombre_encargado}}
+            @endforeach
+
+            <a href="{{route('llamada.buzon',$biblioteca->id)}}"> {{$biblioteca->Ultimocontacto($biblioteca->id)}}</a>
+
+
+            @foreach ($biblioteca->contactoEfectivo as $contactoExitoso )
+            <p style="color:blue">{{$contactoExitoso->seguimiento}}</p>
+            @endforeach
+
+
+            @foreach ( $biblioteca->sinContactos as $sinContacto )
+            {{$sinContacto->observaciones}}
+            @endforeach
 
     @endforeach
 

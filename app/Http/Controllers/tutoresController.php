@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 use App\Biblioteca;
 use App\Dependencia;
 use App\Http\Requests\UpdateContactoBDT;
+use App\sincontacto;
+use Carbon\Carbon;
 
 use Illuminate\Http\Request;
 
@@ -12,6 +14,7 @@ class tutoresController extends Controller
     public function index(){
         $user = \Auth::user()->id;
         $bibliotecas = Biblioteca::get()->where('tutor_id',$user);
+
         return view('Tutor.index',compact('bibliotecas'));
 
     }
@@ -61,17 +64,49 @@ class tutoresController extends Controller
     }
 
 
-    public function TutoriaNoefectiva(){
+
+    public function TutoriaNoefectiva($id){
+        $biblioteca = Biblioteca::find($id);
+
+        return view('Tutor.Noefectiva',compact('biblioteca'));
 
     }
 
-    public function GuardarNoEfectiva(){
+
+
+    public function GuardarNoEfectiva(Request $request)
+    {
+
+
+        // Guardar la nueva información
+        $id_tutor = \Auth::user()->id;
+        $fecha = Carbon::now();
+
+        $sincontacto = new Sincontacto;
+        $sincontacto->id_tutor = $id_tutor;
+        $sincontacto->id_bioblioteca = $request->id_biblioteca;
+        $sincontacto->fecha = $fecha;
+        $sincontacto->motivo = $request->motivo;
+        $sincontacto->observaciones = $request->observaciones;
+        $sincontacto->save();
+
+
+
+        return redirect()->route('tutor.index')->with('success', 'Tutoria Actualizada de Forma Exitosa.');
+    }
+
+
+
+    public function ContactoEfectivo($id){
+        $biblioteca = Biblioteca::get()->where('clavebdt',$id);
+        return $biblioteca;
 
     }
 
-    public function ContactoEfectivo(){
 
-    }
+
+
+
 
 
 
