@@ -97,10 +97,118 @@ class Biblioteca extends Model
             return $fecha_NoExitosa->toDateString();
         }
 
+    }
+    public function Historico($id){
+        $exitosas = contactoefectivo::where('id_bioblioteca', $id)->get();
+        $noExitosas = sincontacto::where('id_bioblioteca', $id)->get();
+
+        $data = [
+            'fallidos' => $noExitosas,
+            'exitoso' => $exitosas
+        ];
+
+        $llamadas = [];
+        $historico = [];
+
+        // obtención datos llamada
+        foreach ($data as $estados) {
+            foreach ($estados as $estado ) {
+                // Fecha
+                array_push($llamadas, $estado->fecha);
+
+                // Tutor->nombre
+                array_push($llamadas, $estado->tutor->name);
+
+                // mensaje
+                if (($estado->observaciones) == null) {
+                    array_push($llamadas, $estado->seguimiento);
+                } else {
+                    array_push($llamadas, $estado->observaciones);
+                }
+
+                array_push($historico, $llamadas);
+                $llamadas = [];
+            }
         }
+        return $historico;
+    }
 
+    public function fechaBDT($id){
+        $exitosas = contactoefectivo::where('id_bioblioteca', $id)->get();
+        $noExitosas = sincontacto::where('id_bioblioteca', $id)->get();
 
+        $data = [
+            'fallidos' => $noExitosas,
+            'exitoso' => $exitosas
+        ];
 
+        $fechas = [];
+        $historico = [];
 
+        // obtención datos llamada
+        foreach ($data as $estados) {
+            foreach ($estados as $estado ) {
+                // Fecha
+                array_push($fechas, $estado->fecha);
+
+                array_push($historico, $fechas);
+                $fechas = [];
+            }
+        }
+        return $historico;
+    }
+
+    public function tutorBDT($id){
+        $exitosas = contactoefectivo::where('id_bioblioteca', $id)->get();
+        $noExitosas = sincontacto::where('id_bioblioteca', $id)->get();
+
+        $data = [
+            'fallidos' => $noExitosas,
+            'exitoso' => $exitosas
+        ];
+
+        $tutores = [];
+        $historico = [];
+
+        // obtención datos llamada
+        foreach ($data as $estados) {
+            foreach ($estados as $estado ) {
+                // Tutor->nombre
+                array_push($tutores, $estado->tutor->name);
+                array_push($historico, $tutores);
+                $tutores = [];
+            }
+        }
+        return $historico;
+    }
+
+    public function mensajeBDT($id){
+        $exitosas = contactoefectivo::where('id_bioblioteca', $id)->get();
+        $noExitosas = sincontacto::where('id_bioblioteca', $id)->get();
+
+        $data = [
+            'fallidos' => $noExitosas,
+            'exitoso' => $exitosas
+        ];
+
+        $mensajes = [];
+        $historico = [];
+
+        // obtención datos llamada
+        foreach ($data as $estados) {
+            foreach ($estados as $estado ) {
+                // mensaje
+                if (($estado->observaciones) == null) {
+                    array_push($mensajes, $estado->seguimiento);
+                } else {
+                    array_push($mensajes, $estado->observaciones);
+                }
+
+                array_push($historico, $mensajes);
+                $mensajes = [];
+            }
+        }
+        return $historico;
+    }
 
 }
