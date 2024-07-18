@@ -2,8 +2,7 @@
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdn.datatables.net/2.0.8/css/dataTables.bootstrap5.css">
-{{-- Font awesome --}}
-<link rel="stylesheet" href="{{ asset('fontawesome-free-6.3.0-web/css/all.min.css') }}">
+
 
 
 @section('menu')
@@ -24,7 +23,7 @@
             <a class="nav-link" href="#">Categoria 2</a>
         </nav>
     </div>
-@endsection
+    @endsection
 
 {{-- Tabla principal --}}
 <div class="container mt-5">
@@ -43,9 +42,17 @@
         <tbody>
             @foreach ($bibliotecas as $biblioteca )
                 <tr>
-                    <td> {{ $biblioteca['clavebdt']  }} </td>
-                    <td> {{ $biblioteca['nombreMatutino']  }} </td>
-                    <td> <a href="" data-toggle="modal" data-target="#historicoLlamadas"> {{ $biblioteca->Ultimocontacto($biblioteca->id)  }} </a></td>
+                    <td> {{ $biblioteca->clavebdt  }} </td>
+                    <td> {{ $biblioteca->nombreMatutino }} </td>
+                    <td>
+                        <a href="" data-toggle="modal" data-target="#historicoLlamadas"
+                            {{-- onclick="actualizarGlobal( {{ json_encode($biblioteca->Historico($biblioteca->id)) }} )" --}}
+                            data-historico="{{ json_encode($biblioteca->Historico($biblioteca->id)) }}"
+                        >
+                            {{ $biblioteca->Ultimocontacto($biblioteca->id) }}
+                        </a>
+                    </td>
+
                     <td> {{ $biblioteca['estatus']  }} </td>
                     <td> <button  type="button" class="btn btn-primary" data-toggle="modal" data-target="#contactoBiblioteca">Llamar</button></td>
                     <td> <a href="{{ route('contactos.form.update',$biblioteca->id) }}"  > <img src="./img/edit.png" alt=""> </a></td>
@@ -53,8 +60,12 @@
             @endforeach
         </tbody>
     </table>
+    <a href="/Pruebas">PIVOTJS</a><br>
+    @foreach ($bibliotecas as $biblioteca )
+    <a href="{{route('inicio.tutoria',$biblioteca->clavebdt)}}"> {{$biblioteca->clavebdt}}</a>
+    <a href="{{route('llamada.buzon',$biblioteca->id)}}"> {{$biblioteca->Ultimocontacto($biblioteca->id)}}</a><br>
+    @endforeach
 </div>
-
 
 
 {{-- Historico de  Llamadas--}}
@@ -68,7 +79,6 @@
                 </button>
             </div>
             <div class="modal-body">
-
                 <table class="table table-striped" style="width:100%">
                     <thead>
                         <tr>
@@ -77,22 +87,8 @@
                             <th>Mensaje</th>
                         </tr>
                     </thead>
-
-                    <tbody>
-                        @foreach ($bibliotecas as $biblioteca )
-                            @foreach ( $biblioteca->Historico($biblioteca->id) as $llamada)
-
-                                <tr>
-                                    <td> {{ $llamada[0] }} </td>
-                                    <td> {{ $llamada[1] }} </td>
-                                    <td> {{ $llamada[2] }} </td>
-                                </tr>
-
-                            @endforeach
-                        @endforeach
-                    </tbody>
+                    {{-- el <tbody> es creado desde la función en JQuery --}}
                 </table>
-
             </div>
         </div>
     </div>
@@ -147,6 +143,7 @@
     </div>
 </div>
 
+
 <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
@@ -170,4 +167,52 @@
             topStart:null
         }
     });
+
+    // Modal
+
+    $('#historicoLlamadas').on('show.bs.modal', function (event) {
+        // obtener el objeto que activa el modal
+        const linkModal = $(event.relatedTarget);
+
+        // obtener los datos que activa el modal
+        let data = JSON.stringify(linkModal.data('historico'));
+        let arregloData = JSON.parse(data)
+        // alert(data)
+
+        const modal = $(this);
+
+        modal.find('.modal-body .table').html(añadirFilasHistorico(arregloData));
+
+        // modal.find('.modal-title').text(data.length.toString());
+        // modal.find('.modal-body #fila').val(datos)
+
+    })
+
+
+
+    function añadirFilasHistorico(data) {
+        // crecaion del cuerpo de la tabla
+        let $tbody = $("<tbody></tbody>");
+        let $tr = $("<tr></tr>");
+        let $tdFecha;
+        let $tdTutor;
+        let $tdMensaje;
+
+        let llamada = 0;
+
+        while (llamada < data.length){
+            $tdFecha = $(`<td> ${data[llamada][0]} </td>`)
+            $tdTutor = $(`<td> ${data[llamada][1]} </td>`)
+            $tdMensaje = $(`<td> ${data[llamada][2]} </td>`)
+
+            $tr.append($tdFecha,$tdTutor,$tdMensaje)
+            $tbody.append($tr)
+
+            $tr = $("<tr></tr>");
+            llamada++
+        }
+
+        return $tbody
+    }
+
 </script>

@@ -63,15 +63,37 @@ class tutoresController extends Controller
     }
 
 
-    public function TutoriaNoefectiva(){
+    public function TutoriaNoefectiva($id){
+        $biblioteca = Biblioteca::find($id);
+
+        return view('Tutor.Noefectiva',compact('biblioteca'));
 
     }
 
-    public function GuardarNoEfectiva(){
+    public function GuardarNoEfectiva(Request $request)
+    {
 
+
+        // Guardar la nueva información
+        $id_tutor = \Auth::user()->id;
+        $fecha = Carbon::now();
+
+        $sincontacto = new Sincontacto;
+        $sincontacto->id_tutor = $id_tutor;
+        $sincontacto->id_bioblioteca = $request->id_biblioteca;
+        $sincontacto->fecha = $fecha;
+        $sincontacto->motivo = $request->motivo;
+        $sincontacto->observaciones = $request->observaciones;
+        $sincontacto->save();
+
+
+
+        return redirect()->route('tutor.index')->with('success', 'Tutoria Actualizada de Forma Exitosa.');
     }
 
-    public function ContactoEfectivo(){
+    public function ContactoEfectivo($id){
+        $biblioteca = Biblioteca::get()->where('clavebdt',$id);
+        return $biblioteca;
 
     }
 
@@ -87,5 +109,4 @@ class tutoresController extends Controller
         return view('Tutor.Actualizar.contactos',compact('bibliotecas','biblioteca','id_biblioteca'));
 
     }
-
 }
