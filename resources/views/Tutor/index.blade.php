@@ -46,15 +46,23 @@
                     <td> {{ $biblioteca->nombreMatutino }} </td>
                     <td>
                         <a href="" data-toggle="modal" data-target="#historicoLlamadas"
-                            {{-- onclick="actualizarGlobal( {{ json_encode($biblioteca->Historico($biblioteca->id)) }} )" --}}
+                            data-nombre="{{ $biblioteca->nombreMatutino }}"
                             data-historico="{{ json_encode($biblioteca->Historico($biblioteca->id)) }}"
                         >
                             {{ $biblioteca->Ultimocontacto($biblioteca->id) }}
                         </a>
                     </td>
 
-                    <td> {{ $biblioteca['estatus']  }} </td>
-                    <td> <button  type="button" class="btn btn-primary" data-toggle="modal" data-target="#contactoBiblioteca">Llamar</button></td>
+                    <td> {{ $biblioteca->estatus  }} </td>
+                    <td>
+                        <button  type="button" class="btn btn-primary" data-toggle="modal" data-target="#contactoBiblioteca"
+                            data-nombre = "{{ $biblioteca->nombreMatutino }}"
+                            data-dependencia = "{{ json_encode($biblioteca->dependenciasContacto($biblioteca->id)) }}"
+                            data-ruta = "{{route('llamada.buzon',$biblioteca->id)}}"
+                        >
+                        Llamar
+                        </button>
+                    </td>
                     <td> <a href="{{ route('contactos.form.update',$biblioteca->id) }}"  > <img src="./img/edit.png" alt=""> </a></td>
                 </tr>
             @endforeach
@@ -62,8 +70,8 @@
     </table>
     <a href="/Pruebas">PIVOTJS</a><br>
     @foreach ($bibliotecas as $biblioteca )
-    <a href="{{route('inicio.tutoria',$biblioteca->clavebdt)}}"> {{$biblioteca->clavebdt}}</a>
-    <a href="{{route('llamada.buzon',$biblioteca->id)}}"> {{$biblioteca->Ultimocontacto($biblioteca->id)}}</a><br>
+        <a href="{{route('inicio.tutoria',$biblioteca->clavebdt)}}"> {{$biblioteca->clavebdt}}</a>
+        <a href="{{route('llamada.buzon',$biblioteca->id)}}"> {{$biblioteca->Ultimocontacto($biblioteca->id)}}</a><br>
     @endforeach
 </div>
 
@@ -73,22 +81,17 @@
     <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Historico de LLamadas</h5>
+                <h5 class="modal-title" id="exampleModalLongTitle" style="font-weight: bold;">HISTORICO DE LLAMADAS</h5><br>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <table class="table table-striped" style="width:100%">
-                    <thead>
-                        <tr>
-                            <th>Fecha</th>
-                            <th>Tutor</th>
-                            <th>Mensaje</th>
-                        </tr>
-                    </thead>
-                    {{-- el <tbody> es creado desde la función en JQuery --}}
-                </table>
+                <h6 class="BDT" style="font-weight: bold;"></h6>
+
+                <div class="contenedorTabla">
+                    {{-- La <table>es creado desde la función en JQuery --}}
+                </div>
             </div>
         </div>
     </div>
@@ -100,44 +103,25 @@
     <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Contacto Biblioteca</h5>
+                <h5 class="modal-title" id="exampleModalLongTitle" style="font-weight: bold;">CONTACTO BIBLIOTECA</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-
-                <table class="table table-striped" style="width:100%">
-                    <thead>
-                        <tr>
-                            <th>Nombre Responsable</th>
-                            <th>Numero de telefono</th>
-                            <th>Celular</th>
-                            <th>Correo</th>
-                            <th>Cargo</th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                        @foreach ($bibliotecas as $biblioteca )
-                            @foreach ($biblioteca->dependencias as $dependencia)
-                                <tr>
-                                    <td> {{ $dependencia->nombre_responsable }} </td>
-                                    <td> {{ $dependencia->telefono_responsable }} </td>
-                                    <td> {{ $dependencia->celular_responsable }} </td>
-                                    <td> {{ $dependencia->correo_responsable }} </td>
-                                    <td> {{ $dependencia->cargo_responsable }} </td>
-                                </tr>
-                            @endforeach
-                        @endforeach
-                    </tbody>
-                </table>
-
+                <h6 class="BDT" style="font-weight: bold;"></h6>
+                <div class="contenedorTabla">
+                    <h6 id="prueba"></h6>
+                    {{-- La <table>es creado desde la función en JQuery --}}
+                </div>
             </div>
             <div class="modal-footer">
                 <p>¿Respondió la llamada?</p>
                 <button type="button" class="btn btn-primary" data-dismiss="modal">Si</button>
-                <button type="button" class="btn btn-secondary">No</button>
+
+                <a id="no" >
+                    <button type="button" class="btn btn-secondary">No</button>
+                </a>
             </div>
         </div>
     </div>
@@ -168,51 +152,135 @@
         }
     });
 
-    // Modal
-
+// MODALES
+//----- Historico ------------------------------------------------------------------
     $('#historicoLlamadas').on('show.bs.modal', function (event) {
         // obtener el objeto que activa el modal
         const linkModal = $(event.relatedTarget);
 
         // obtener los datos que activa el modal
+        let bdt = linkModal.data('nombre');
         let data = JSON.stringify(linkModal.data('historico'));
         let arregloData = JSON.parse(data)
-        // alert(data)
 
         const modal = $(this);
 
-        modal.find('.modal-body .table').html(añadirFilasHistorico(arregloData));
-
-        // modal.find('.modal-title').text(data.length.toString());
-        // modal.find('.modal-body #fila').val(datos)
-
+        modal.find('.modal-body .BDT').html(bdt);
+        modal.find('.modal-body .contenedorTabla').html(añadirFilasHistorico(arregloData));
     })
 
-
-
     function añadirFilasHistorico(data) {
-        // crecaion del cuerpo de la tabla
+        // Creacion del cuerpo de la tabla
+        let $table =$("<table></table>");
+        $table.attr({
+            id:"tablaHistorico",
+            class:"table table-striped",
+            style:"width:100%"
+        });
+
+        // Encabezados de las columnas
+        let $thead = $("<thead><tr><th>Fecha</th><th>Tutor</th><th>Mensaje</th></tr></thead>")
+        $table.append($thead)
+
+        // Estructutra del cuerpo de la tabla
         let $tbody = $("<tbody></tbody>");
         let $tr = $("<tr></tr>");
+
         let $tdFecha;
         let $tdTutor;
         let $tdMensaje;
 
         let llamada = 0;
 
+        // Rellenar cada columna en función del tamaño del arreglo(llamadas)
         while (llamada < data.length){
             $tdFecha = $(`<td> ${data[llamada][0]} </td>`)
             $tdTutor = $(`<td> ${data[llamada][1]} </td>`)
             $tdMensaje = $(`<td> ${data[llamada][2]} </td>`)
 
-            $tr.append($tdFecha,$tdTutor,$tdMensaje)
+            $tr.append($tdFecha, $tdTutor, $tdMensaje)
             $tbody.append($tr)
 
             $tr = $("<tr></tr>");
             llamada++
         }
 
-        return $tbody
+        // Añadir del cuerpo creado
+        $table.append($tbody)
+
+        // Devolver la Tabla
+        return $table
+    }
+
+//----- Contacto ------------------------------------------------------------------
+    $('#contactoBiblioteca').on('show.bs.modal', function (event) {
+        // obtener el objeto que activa el modal
+        const linkModal = $(event.relatedTarget);
+
+        // obtener los datos que activa el modal
+        let bdt = linkModal.data('nombre');
+        let ruta = linkModal.data('ruta');
+
+        let data = JSON.stringify(linkModal.data('dependencia'));
+        let arregloData = JSON.parse(data)
+
+        const modal = $(this);
+
+        modal.find('.modal-body .BDT').html(bdt);
+        modal.find('.modal-body .contenedorTabla').html(añadirFilasContacto(arregloData));
+        modal.find('.modal-footer #no').prop("href",ruta);
+    })
+
+    function añadirFilasContacto(data) {
+        // Creacion del cuerpo de la tabla
+        let $table =$("<table></table>");
+        $table.attr({
+            id:"tablaContacto",
+            class:"table table-striped",
+            style:"width:100%"
+        });
+
+        // Encabezados de las columnas
+        let $thead = $("<thead><tr><th>Nombre Responsable/Encargado</th><th>Numero de telefono</th><th>Celular</th><th>Correo</th><th>Cargo</th></tr></thead>")
+        $table.append($thead)
+
+        // Estructutra del cuerpo de la tabla
+        let $tbody = $("<tbody></tbody>");
+        let $tr = $("<tr></tr>");
+
+        let $tdNombre;
+        let $tdTelefono;
+        let $tdCelular;
+        let $tdCorreo;
+        let $tdCargo;
+
+        let Puesto = 'responsable';
+        let contador = 0;
+
+        // Contador <2 dado que son solo 2 personas para contactar (responsable y encargado)
+        while (contador < 2){
+            // Rellenar cada columna en función del tamaño de los puestos (Responsable/Encargado)
+            $tdNombre = $(`<td> ${data[0]['nombre_' + Puesto]} </td>`)
+            $tdTelefono = $(`<td> ${data[0]['telefono_' + Puesto]} </td>`)
+            $tdCelular = $(`<td> ${data[0]['celular_' + Puesto]} </td>`)
+            $tdCorreo = $(`<td> ${data[0]['correo_' + Puesto]} </td>`)
+            $tdCargo = $(`<td> ${data[0]['cargo_' + Puesto]} </td>`)
+
+            $tr.append($tdNombre, $tdTelefono, $tdCelular, $tdCorreo, $tdCargo)
+            $tbody.append($tr)
+
+
+            $tr = $("<tr></tr>");
+
+            Puesto = 'encargado'
+            contador++
+        }
+
+        // Añadir del cuerpo creado
+        $table.append($tbody)
+
+        // Devolver la Tabla
+        return $table
     }
 
 </script>

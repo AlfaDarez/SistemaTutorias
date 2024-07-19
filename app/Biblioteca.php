@@ -132,5 +132,9 @@ class Biblioteca extends Model
         }
         return $historico;
     }
+    public function dependenciasContacto($id){
+        $dependencia = Dependencia::where('id_biblioteca', $id)->get();
+        return $dependencia;
+    }
 
 }

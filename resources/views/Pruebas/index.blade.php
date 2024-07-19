@@ -1,8 +1,8 @@
-{{-- @extends('Panel.app')
+{{-- @extends('Panel.app') --}}
 
 
 
-@section('menu')
+{{-- @section('menu')
     <a class="nav-link" href="#">
         <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
         Principal
@@ -20,9 +20,9 @@
             <a class="nav-link" href="#">Categoria 2</a>
         </nav>
     </div>
-@endsection
+@endsection --}}
 
-@section('contenido')
+{{-- @section('contenido')
     <h1>Contenido</h1>
 
 @endsection --}}
@@ -30,31 +30,55 @@
 {{-- Tabla principal --}}
 <link rel="stylesheet" type="text/css" href="{{ asset('dist/pivot.css') }}">
 
-
+<script type="text/javascript" src="ext/d3.v3.min.js"></script>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <script type="text/javascript" src="ext/jquery-1.8.3.min.js"></script>
 <script type="text/javascript" src="ext/jquery-ui-1.9.2.custom.min.js"></script>
-<script type="text/javascript" src="ext/jquery.csv-0.71.min.js"></script>
 <script type="text/javascript" src="dist/pivot.js"></script>
+<script type="text/javascript" src="dist/gchart_renderers.js"></script>
+<script type="text/javascript" src="dist/d3_renderers.js"></script>
+<script type="text/javascript" src="ext/jquery.ui.touch-punch.min.js"></script>
+
 
 <style>
     * {font-family: Verdana;}
+    .node {
+        border: solid 1px white;
+        font: 10px sans-serif;
+        line-height: 12px;
+        overflow: hidden;
+        position: absolute;
+        text-indent: 2px;
+    }
 </style>
 
 <h1>Contenido</h1>
 
+{{-- Salida de  --}}
+<div id="output" style="margin: 80px;"></div>
 
-<div id="output" style="margin: 30px;"></div>
-    <script type="text/javascript">
-            $(function(){
-                $("#output").pivotUI(
-                    [
-                        {color: "blue", shape: "circle"},
-                        {color: "red", shape: "triangle"}
-                    ],
-                    {
-                        rows: ["color"],
-                        cols: ["shape"]
+<script type="text/javascript">
+    google.load("visualization", "1", {packages:["corechart", "charteditor"]});
+    $(function(){
+        var derivers = $.pivotUtilities.derivers;
+
+        $.getJSON("mps.json", function(mps) {
+            $("#output").pivotUI(mps, {
+                renderers: $.extend(
+                    $.pivotUtilities.renderers,
+                    $.pivotUtilities.gchart_renderers,
+                    $.pivotUtilities.d3_renderers
+                    ),
+                // Atributos derivados (posibles funciones a crear)
+                derivedAttributes: {
+                    "Edad Bin": derivers.bin("Edad", 10),
+                    "Genero Imbalance": function(mp) {
+                        return mp["Genero"] == "Masculino" ? 1 : -1;
                     }
-                );
+                },
+                cols: ["Edad Bin"], rows: ["Genero"],
+                rendererName: "Area Chart"
             });
-    </script>
+        });
+    });
+</script>

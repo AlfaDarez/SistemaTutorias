@@ -47,7 +47,6 @@
                         <!--<li><a class="dropdown-item" href="#!">Activity Log</a></li> -->
                         <li><hr class="dropdown-divider" /></li>
 
-
                         <li>
                             <a class="dropdown-item" href="{{ route('logout') }}"
                             onclick="event.preventDefault();
@@ -59,8 +58,6 @@
                                 @csrf
                             </form>
                         </li>
-
-
 
                     </ul>
                 </li>
@@ -81,68 +78,65 @@
                             @endif
 
                             @if (Auth::user()->nivel == 2)
-                            <a class="nav-link" href="#">
-                                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                                Panel Incio
-                            </a>
+                                <a class="nav-link" href="#">
+                                    <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                                    Panel Incio
+                                </a>
 
-                            <div class="sb-sidenav-menu-heading">Actividades Administrativas</div>
-                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
-                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                                Categorias
-                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                            </a>
-                            <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
-                                <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="{{route('tutores.index')}}">Gestion Usuarios</a>
-                                    <a class="nav-link" href="{{route('biblioteca.tutor')}}">Bibliotecas</a>
-                                    <a class="nav-link" href="#">Inventarios Equipos</a>
-                                    <a class="nav-link" href="#">Inventarios Mobiliario</a>
-                                    <a class="nav-link" href="#">Internet</a>
+                                <div class="sb-sidenav-menu-heading">Actividades Administrativas</div>
+                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
+                                    <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                                    Categorias
+                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                </a>
+                                <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                                    <nav class="sb-sidenav-menu-nested nav">
+                                        <a class="nav-link" href="{{route('tutores.index')}}">Gestion Usuarios</a>
+                                        <a class="nav-link" href="{{route('biblioteca.tutor')}}">Bibliotecas</a>
+                                        <a class="nav-link" href="#">Inventarios Equipos</a>
+                                        <a class="nav-link" href="#">Inventarios Mobiliario</a>
+                                        <a class="nav-link" href="#">Internet</a>
 
-                                </nav>
-                            </div>
+                                    </nav>
+                                </div>
 
-                            <div class="sb-sidenav-menu-heading">Acceso Rapido</div>
+                                <div class="sb-sidenav-menu-heading">Acceso Rapido</div>
 
-                            <a class="nav-link" href="#">
-                                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                                Actualizar Mobilario
-                            </a>
+                                <a class="nav-link" href="#">
+                                    <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                                    Actualizar Mobilario
+                                </a>
 
-                            <a class="nav-link" href="#">
-                                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                                Actualizar Equipos
-                            </a>
+                                <a class="nav-link" href="#">
+                                    <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                                    Actualizar Equipos
+                                </a>
 
-                            <a class="nav-link" href="#">
-                                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                                Semaforo de Contacto
-                            </a>
+                                <a class="nav-link" href="#">
+                                    <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                                    Semaforo de Contacto
+                                </a>
 
-                            <div class="sb-sidenav-menu-heading">Temporal Alfredo</div>
+                                <div class="sb-sidenav-menu-heading">Temporal Alfredo</div>
 
-                            <a class="nav-link" href="{{route('formimport')}}">
-                                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                                Carga Masiva usuarios
-                            </a>
+                                <a class="nav-link" href="{{route('formimport')}}">
+                                    <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                                    Carga Masiva usuarios
+                                </a>
 
-                            <a class="nav-link" href="{{route('biblioteca.formExcel')}}">
-                                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                                Carga Masiva Bibliotecas / responsables
-                            </a>
+                                <a class="nav-link" href="{{route('biblioteca.formExcel')}}">
+                                    <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                                    Carga Masiva Bibliotecas / responsables
+                                </a>
 
-                            <a class="nav-link" href="#">
-                                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                                Carga Masiva Mobiliario
-                            </a>
-                            <a class="nav-link" href="#">
-                                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                                Carga Masiva Equipos
-                            </a>
-
-
-
+                                <a class="nav-link" href="#">
+                                    <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                                    Carga Masiva Mobiliario
+                                </a>
+                                <a class="nav-link" href="#">
+                                    <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                                    Carga Masiva Equipos
+                                </a>
                             @endif
 
                             @if (Auth::user()->nivel == 3)
@@ -152,8 +146,6 @@
                             @if (Auth::user()->nivel == 4)
 
                             @endif
-
-
 
                           @yield('menu')
 
