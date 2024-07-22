@@ -34,5 +34,12 @@ Route::get('/PanelTutorias/Actualizar/{id}','tutoresController@FormularioActuali
 Route::get('/Pruebas','pruebasController@index')->name('pruebas.index');
 
 
+
+Route::get('/Pruebas/form','pruebasController@formularioTelegram')->name('pruebas.form');
+
+Route::POST('/Pruebas/form-submit','pruebasController@StoreTelegram')->name('store.telegram');
+
+
+
 // modal pruebas
 // Route::get('/ejemplo1/{id}','tutoresController@HistoricoBDT');

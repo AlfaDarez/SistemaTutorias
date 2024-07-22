@@ -29,4 +29,11 @@ class pruebasController extends Controller
 
     }
 
+    public function formularioTelegram(){
+        return view('Pruebas.form');
+    }
+
+    public function StoreTelegram(Request $request){
+        $request()->all();
+    }
 }

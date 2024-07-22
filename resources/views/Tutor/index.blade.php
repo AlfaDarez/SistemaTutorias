@@ -68,7 +68,8 @@
             @endforeach
         </tbody>
     </table>
-    <a href="/Pruebas">PIVOTJS</a><br>
+    <a href="{{route('pruebas.index')}}">PIVOTJS</a><br>
+    <a href="{{ route('pruebas.form') }}">Telegram</a><br>
     @foreach ($bibliotecas as $biblioteca )
         <a href="{{route('inicio.tutoria',$biblioteca->clavebdt)}}"> {{$biblioteca->clavebdt}}</a>
         <a href="{{route('llamada.buzon',$biblioteca->id)}}"> {{$biblioteca->Ultimocontacto($biblioteca->id)}}</a><br>
